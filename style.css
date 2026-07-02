@@ -1929,6 +1929,54 @@ body.light-mode .footer-bottom {
   color: #25d366 !important;
 }
 
+/* Library Card Action Buttons */
+.library-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.library-card-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.card-action-btn {
+  background: transparent;
+  border: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 4px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+}
+
+.card-action-btn:hover {
+  transform: scale(1.2);
+}
+
+.card-action-btn.fav-btn {
+  filter: grayscale(1);
+  opacity: 0.45;
+}
+
+.card-action-btn.fav-btn.active {
+  filter: none;
+  opacity: 1;
+}
+
+/* Light mode search input styling */
+body.light-mode #librarySearchInput {
+  background: rgba(0, 0, 0, 0.03) !important;
+  color: #2d243a !important;
+  border-color: rgba(212, 175, 55, 0.4) !important;
+}
+
 /* ======= Comprehensive Mobile Responsiveness Upgrades (Phones & Tablets) ======= */
 @media (max-width: 768px) {
   /* Global Layout */

@@ -28,6 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let quizStreak = parseInt(localStorage.getItem("quizStreak")) || 0;
   let quizScore = parseInt(localStorage.getItem("quizScore")) || 0;
 
+  // Bookmarks & Search state
+  let favoriteDohas = JSON.parse(localStorage.getItem("favoriteDohas")) || [];
+  let searchString = "";
+
   // --- Background presets for canvas ---
   const backgroundPresets = [
     {
@@ -849,17 +853,46 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Library Rendering ---
   const libraryGrid = document.getElementById("libraryGrid");
   const categoryFilters = document.querySelectorAll(".filter-chip");
+  const librarySearchInput = document.getElementById("librarySearchInput");
   let activeCategory = "all";
   let libraryLimit = 6;
+
+  // Listen to search inputs
+  if (librarySearchInput) {
+    librarySearchInput.addEventListener("input", (e) => {
+      searchString = e.target.value.toLowerCase().trim();
+      renderLibrary();
+    });
+  }
 
   function renderLibrary() {
     libraryGrid.innerHTML = "";
     
     const filteredDohas = dohas.filter(item => {
-      if (activeCategory === "all") return true;
-      if (item.category === activeCategory) return true;
-      const authorMatch = item.author.toLowerCase().replace(/\s/g, "") === activeCategory.toLowerCase().replace(/\s/g, "");
-      return authorMatch;
+      // Category & Favorites filter
+      let matchesFilter = false;
+      if (activeCategory === "all") {
+        matchesFilter = true;
+      } else if (activeCategory === "favorites") {
+        matchesFilter = favoriteDohas.includes(item.id);
+      } else if (item.category === activeCategory) {
+        matchesFilter = true;
+      } else {
+        const authorMatch = item.author.toLowerCase().replace(/\s/g, "") === activeCategory.toLowerCase().replace(/\s/g, "");
+        matchesFilter = authorMatch;
+      }
+
+      // Search match
+      if (!matchesFilter) return false;
+      if (!searchString) return true;
+
+      return (
+        item.original.toLowerCase().includes(searchString) ||
+        item.author.toLowerCase().includes(searchString) ||
+        item.translation_hi.toLowerCase().includes(searchString) ||
+        item.translation_mr.toLowerCase().includes(searchString) ||
+        item.translation_en.toLowerCase().includes(searchString)
+      );
     });
 
     const displayDohas = filteredDohas.slice(0, libraryLimit);
@@ -868,13 +901,55 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = document.createElement("div");
       card.className = "library-card";
       
+      const isFav = favoriteDohas.includes(item.id);
+      
       card.innerHTML = `
         <div class="library-card-text">${item.original.replace(/\n/g, '<br>')}</div>
         <div class="library-card-footer">
           <span class="library-card-author">${item.author}</span>
-          <span class="library-card-category">${item.category}</span>
+          <div class="library-card-actions">
+            <button class="card-action-btn fav-btn ${isFav ? 'active' : ''}" title="Favorite / आवडते">❤️</button>
+            <button class="card-action-btn copy-btn" title="Copy Text / कॉपी करा">📋</button>
+            <button class="card-action-btn share-btn" title="Share on WhatsApp / शेअर करा">🟢</button>
+          </div>
         </div>
       `;
+      
+      // Heart/Favorite Click Listener
+      const favBtn = card.querySelector(".fav-btn");
+      favBtn.addEventListener("click", (e) => {
+        e.stopPropagation(); // Prevents loading card into editor
+        if (favoriteDohas.includes(item.id)) {
+          favoriteDohas = favoriteDohas.filter(id => id !== item.id);
+        } else {
+          favoriteDohas.push(item.id);
+        }
+        localStorage.setItem("favoriteDohas", JSON.stringify(favoriteDohas));
+        renderLibrary();
+      });
+
+      // Copy Doha Click Listener
+      const copyBtn = card.querySelector(".copy-btn");
+      copyBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const copyText = `${item.original}\n- ${item.author}\nअर्थ: ${item.translation_mr}\nMeaning: ${item.translation_en}`;
+        navigator.clipboard.writeText(copyText).then(() => {
+          // Temporarily show success feedback on button
+          const originalText = copyBtn.textContent;
+          copyBtn.textContent = "✓";
+          setTimeout(() => {
+            copyBtn.textContent = originalText;
+          }, 1500);
+        });
+      });
+
+      // WhatsApp Share Click Listener
+      const shareBtn = card.querySelector(".share-btn");
+      shareBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const shareText = encodeURIComponent(`🧘 Daily Doha Wisdom 🧘\n\n"${item.original}"\n- ${item.author}\n\n👉 Create Doha Posters: https://dailydohawisdom-6c5be.web.app`);
+        window.open(`https://api.whatsapp.com/send?text=${shareText}`, "_blank");
+      });
       
       card.addEventListener("click", () => {
         currentDoha = item;
