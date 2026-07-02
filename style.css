@@ -1963,7 +1963,7 @@ body.light-mode .footer-bottom {
   }
 
   body.light-mode .hamburger-menu .bar {
-    background-color: var(--text-light-main);
+    background-color: #1d153d !important; /* Deep indigo color to be clearly visible on white background */
   }
 
   .hamburger-menu.active .bar:nth-child(1) {
