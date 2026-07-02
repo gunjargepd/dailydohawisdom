@@ -1923,4 +1923,246 @@ body.light-mode .footer-bottom {
   color: #25d366 !important;
 }
 
+/* ======= Comprehensive Mobile Responsiveness Upgrades (Phones & Tablets) ======= */
+@media (max-width: 768px) {
+  /* Global Layout */
+  main {
+    padding: 0 0.8rem !important;
+    gap: 1.8rem !important;
+  }
+  
+  h2 {
+    font-size: 1.6rem !important;
+  }
+  
+  .section-subtitle {
+    font-size: 0.85rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  /* Header & Navbar */
+  header {
+    padding: 0.35rem 0.5rem !important;
+  }
+  
+  .header-container {
+    flex-direction: column !important;
+    gap: 6px !important;
+    align-items: center !important;
+  }
+  
+  .logo-section {
+    gap: 6px !important;
+  }
+  
+  .logo-title {
+    font-size: 1.15rem !important;
+    text-align: center;
+  }
+  
+  .logo-subtitle {
+    display: none !important; /* Hide subtitle to keep bar thin */
+  }
+  
+  .logo-svg {
+    width: 44px !important; /* Slightly smaller for mobile headers */
+    height: 44px !important;
+  }
+  
+  .nav-links {
+    width: 100% !important;
+    justify-content: center !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    padding-bottom: 6px !important;
+    gap: 0.8rem !important;
+    scrollbar-width: none; /* Hide scrollbar for clean look */
+  }
+  
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .nav-links a {
+    font-size: 0.8rem !important;
+    padding: 3px 5px !important;
+  }
+
+  /* Hero Slider */
+  .hero-slider-section {
+    height: 280px !important; /* Shorter slider on mobile */
+  }
+  
+  .slide {
+    padding: 1.2rem !important;
+  }
+  
+  .slide-quote {
+    font-size: 1.25rem !important;
+    line-height: 1.5 !important;
+  }
+  
+  .slide-author {
+    font-size: 0.85rem !important;
+  }
+
+  /* Featured Doha of the Day */
+  .doha-display-container {
+    flex-direction: column !important;
+    gap: 10px !important;
+    text-align: center;
+  }
+  
+  .doha-text {
+    font-size: 1.35rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 0.8rem !important;
+  }
+  
+  .doha-author {
+    font-size: 0.9rem !important;
+  }
+  
+  .speak-btn {
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 1rem !important;
+  }
+  
+  .translation-tabs {
+    flex-wrap: wrap !important;
+    gap: 5px !important;
+  }
+  
+  .tab-btn {
+    padding: 6px 12px !important;
+    font-size: 0.75rem !important;
+  }
+  
+  .translation-content {
+    font-size: 0.9rem !important;
+    padding: 12px !important;
+  }
+
+  /* Poster Studio (Design Studio) */
+  .studio-layout {
+    grid-template-columns: 1fr !important;
+    gap: 1.2rem !important;
+  }
+  
+  .canvas-preview-container {
+    order: -1 !important; /* Push preview to the top! */
+    padding: 1rem !important;
+  }
+  
+  .creator-controls {
+    padding: 1.2rem 1rem !important;
+  }
+  
+  .control-group label {
+    font-size: 0.82rem !important;
+  }
+  
+  .text-input, .select-input {
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+  }
+  
+  .preset-grid {
+    grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)) !important;
+    gap: 8px !important;
+  }
+  
+  .preset-thumb {
+    height: 55px !important;
+  }
+  
+  .btn-primary, .btn-secondary {
+    padding: 10px 15px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Sadhana Modal Popup */
+  .modal-content {
+    padding: 15px !important;
+    width: 95% !important;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .breath-circle-container {
+    width: 75px !important;
+    height: 75px !important;
+  }
+  
+  #breathCircle {
+    width: 35px !important;
+    height: 35px !important;
+  }
+  
+  .sadhana-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  
+  .sadhana-btn {
+    padding: 10px 14px !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Biography & Saints Section */
+  .saint-card {
+    flex-direction: column !important;
+    text-align: center;
+    padding: 1.2rem !important;
+  }
+  
+  .saint-avatar-container {
+    margin: 0 auto 12px auto !important;
+    width: 80px !important;
+    height: 80px !important;
+  }
+  
+  .saint-info h3 {
+    font-size: 1.15rem !important;
+  }
+  
+  .saint-info .lifespan {
+    font-size: 0.75rem !important;
+  }
+  
+  .saint-info p {
+    font-size: 0.82rem !important;
+  }
+
+  /* Footer Layout */
+  .footer-container {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+    text-align: center;
+  }
+  
+  .footer-logo {
+    justify-content: center !important;
+  }
+  
+  .footer-col h4::after {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+  
+  .sub-form {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  
+  .sub-btn {
+    width: 100% !important;
+  }
+  
+  .footer-socials {
+    justify-content: center !important;
+  }
+}
+
 
