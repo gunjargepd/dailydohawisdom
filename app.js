@@ -1549,6 +1549,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // --- Mobile Hamburger Menu Toggle ---
+  const hamburgerMenuBtn = document.getElementById("hamburgerMenuBtn");
+  const navLinksList = document.querySelector(".nav-links");
+
+  if (hamburgerMenuBtn && navLinksList) {
+    hamburgerMenuBtn.addEventListener("click", () => {
+      hamburgerMenuBtn.classList.toggle("active");
+      navLinksList.classList.toggle("active");
+    });
+
+    // Close menu when clicking on any link inside nav-links
+    const links = navLinksList.querySelectorAll("a, button");
+    links.forEach(link => {
+      link.addEventListener("click", () => {
+        if (link.id !== "themeToggleBtn" && link.id !== "openSadhanaNavBtn") {
+          hamburgerMenuBtn.classList.remove("active");
+          navLinksList.classList.remove("active");
+        }
+      });
+    });
+  }
+
   // --- Initialize App ---
   updateFeaturedDohaDisplay();
   renderLibrary();
