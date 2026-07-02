@@ -1917,6 +1917,12 @@ body.light-mode .footer-bottom {
   color: #ff0000 !important;
 }
 
+.social-icon-btn.play-store-btn:hover {
+  background: rgba(46, 204, 113, 0.12) !important;
+  border-color: #2ecc71 !important;
+  color: #2ecc71 !important;
+}
+
 .social-icon-btn.whatsapp-btn:hover {
   background: rgba(37, 211, 102, 0.12) !important;
   border-color: #25d366 !important;

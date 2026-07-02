@@ -4,7 +4,15 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   // --- State Variables ---
-  let currentDoha = dohas[0];
+  // Deterministic daily doha based on the day of the year (rotation through all 5 saints)
+  const today = new Date();
+  const startOfYear = new Date(today.getFullYear(), 0, 0);
+  const diffTime = today - startOfYear;
+  const oneDayInMs = 1000 * 60 * 60 * 24;
+  const dayOfYearIndex = Math.floor(diffTime / oneDayInMs);
+  const dailyDohaIndex = dayOfYearIndex % dohas.length;
+
+  let currentDoha = dohas[dailyDohaIndex];
   let activeTab = "hi"; // hi, mr, en
   let activeAspect = "9_16"; // 9_16, 1_1
   let activePreset = 0;
