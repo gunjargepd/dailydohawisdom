@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gunjargepd.github.io/dailydohawisdom/sitemap.xml
