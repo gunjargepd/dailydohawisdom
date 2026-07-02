@@ -1995,18 +1995,18 @@ body.light-mode .footer-bottom {
     flex-grow: 1;
   }
   
-  .logo-title {
-    font-size: 1.15rem !important;
+  .logo-text h1 {
+    font-size: 1.05rem !important;
     text-align: left;
   }
   
-  .logo-subtitle {
-    display: none !important; /* Hide subtitle to keep bar thin */
+  .logo-text p {
+    display: none !important; /* Hide subtitle to keep bar thin on mobile */
   }
   
   .logo-svg {
-    width: 44px !important; /* Slightly smaller for mobile headers */
-    height: 44px !important;
+    width: 36px !important; /* Smaller logo for mobile headers to prevent overflow */
+    height: 36px !important;
   }
   
   .hamburger-menu {
@@ -2026,10 +2026,16 @@ body.light-mode .footer-bottom {
     align-items: center !important;
     justify-content: flex-start !important;
     padding: 3rem 1.5rem !important;
-    gap: 2rem !important;
+    gap: 1.5rem !important;
     transition: all 0.4s cubic-bezier(0.77, 0.2, 0.05, 1.0) !important;
     z-index: 1000 !important;
     border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    list-style: none !important;
+  }
+
+  .nav-links li {
+    width: 100% !important;
+    text-align: center !important;
     list-style: none !important;
   }
   
