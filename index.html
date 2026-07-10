@@ -291,6 +291,17 @@
             <textarea id="customDohaInput" class="editor-textarea" placeholder="Type or paste custom doha text here..."></textarea>
           </div>
 
+          <!-- Font Style Selection -->
+          <div class="control-group">
+            <label>Font Style / फॉन्ट निवडा</label>
+            <select id="posterFontSelect" class="editor-input" style="width: 100%; border: 1px solid rgba(255,255,255,0.15); background: rgba(13, 14, 21, 0.8); color: #ffffff; padding: 10px; border-radius: 8px; outline: none; cursor: pointer; font-size: 0.85rem;">
+              <option value="'Rozha One', serif">Rozha One (Traditional / पारंपारिक)</option>
+              <option value="'Yatra One', cursive">Yatra One (Calligraphy / कॅलिग्राफी)</option>
+              <option value="'Laila', sans-serif">Laila (Soft Script / सोपे लेख)</option>
+              <option value="'Poppins', sans-serif">Poppins (Modern Clean / आधुनिक)</option>
+            </select>
+          </div>
+
           <!-- Font Size Adjust for Doha -->
           <div class="control-group">
             <label>Doha Font Size: <span id="dohaFontSizeVal">48px</span></label>
@@ -790,6 +801,41 @@
         </div>
         
         <button id="resetJapBtn" class="action-btn text-btn" style="padding: 4px 10px; font-size: 0.75rem; border-color: rgba(255,255,255,0.15); max-width: 100px; margin-top: 4px;">Reset</button>
+      </div>
+
+      <!-- Daily Guru Blessing Cards Subsection -->
+      <div class="blessing-cards-box" style="background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 15px; margin-bottom: 15px;">
+        <span style="font-size: 0.85rem; font-weight: 700; color: var(--brand-gold);">3. Daily Blessing Message / संदेश पत्रिका</span>
+        <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 5px; text-align: center;">Click a Saint's envelope to receive your personalized daily blessing message!</p>
+        
+        <div class="envelope-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; justify-items: center; margin-top: 5px;">
+          <div class="envelope-card" data-saint="kabir" style="cursor: pointer; position: relative; width: 75px; height: 50px; background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.2s;">
+            ✉️<span style="font-size: 0.52rem; position: absolute; bottom: 3px; color: #0d0e15; font-weight: bold; text-transform: uppercase;">Kabir</span>
+          </div>
+          <div class="envelope-card" data-saint="meera" style="cursor: pointer; position: relative; width: 75px; height: 50px; background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.2s;">
+            ✉️<span style="font-size: 0.52rem; position: absolute; bottom: 3px; color: #0d0e15; font-weight: bold; text-transform: uppercase;">Meera</span>
+          </div>
+          <div class="envelope-card" data-saint="tulsidas" style="cursor: pointer; position: relative; width: 75px; height: 50px; background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.2s;">
+            ✉️<span style="font-size: 0.52rem; position: absolute; bottom: 3px; color: #0d0e15; font-weight: bold; text-transform: uppercase;">Tulsi</span>
+          </div>
+        </div>
+
+        <!-- Opened Message Area -->
+        <div id="blessingMessageArea" style="display: none; width: 100%; background: rgba(0,0,0,0.25); border: 1px solid var(--border-gold); border-radius: 8px; padding: 12px; margin-top: 10px; font-size: 0.82rem; line-height: 1.5; color: var(--text-cream); text-align: center; animation: fadeIn 0.3s ease;">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <!-- Sadhana Badges & Ranks Subsection -->
+      <div class="sadhana-badges-box" style="background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 5px;">
+        <span style="font-size: 0.85rem; font-weight: 700; color: var(--brand-gold);">🏆 Chanting Rank / भक्ती पदव्या</span>
+        <div style="display: flex; align-items: center; gap: 15px; margin-top: 5px; width: 100%; justify-content: center;">
+          <div id="userBadgeIcon" style="font-size: 2.4rem; filter: drop-shadow(0 0 8px var(--brand-gold));">🥉</div>
+          <div style="text-align: left;">
+            <div id="userBadgeName" style="font-size: 0.95rem; font-weight: bold; color: #ffffff; font-family: var(--font-header);">Seeker / जिज्ञासू</div>
+            <div id="userBadgeDesc" style="font-size: 0.75rem; color: var(--text-muted);">Points: 0/50 for next level</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

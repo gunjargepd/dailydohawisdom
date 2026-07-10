@@ -291,7 +291,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.shadowOffsetY = 2;
 
     const dohaFontSize = parseInt(document.getElementById("dohaFontSize").value) || 48;
-    ctx.font = `${dohaFontSize}px 'Rozha One', 'Yatra One', Georgia, serif`;
+    const selectedFontFamily = document.getElementById("posterFontSelect")?.value || "'Rozha One', 'Yatra One', Georgia, serif";
+    ctx.font = `${dohaFontSize}px ${selectedFontFamily}`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
@@ -341,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const authorY = dividerY + 60;
     ctx.fillStyle = preset.goldColor;
     const authorName = customDohaText.trim() ? "Wisdom Quote" : currentDoha.author;
-    ctx.font = "bold 34px 'Rozha One', Georgia, serif";
+    ctx.font = `bold 34px ${selectedFontFamily}`;
     ctx.fillText(`- ${authorName}`, width / 2, authorY);
 
     // 7. Draw Translation/Meaning Text
@@ -700,6 +701,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     quizStreakEl.textContent = quizStreak;
     quizScoreEl.textContent = quizScore;
+    updateSadhanaBadge();
     
     nextQuizBtn.style.display = "block";
     recordSadhanaActivity(); // Record daily streak activity!
@@ -909,6 +911,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("transFontSizeVal").textContent = `${transFontSize.value}px`;
     drawPoster();
   });
+
+  const posterFontSelect = document.getElementById("posterFontSelect");
+  if (posterFontSelect) {
+    posterFontSelect.addEventListener("change", () => {
+      drawPoster();
+    });
+  }
 
   // --- Translation Tab clicking ---
   const tabButtons = document.querySelectorAll(".tab-btn");
@@ -1567,6 +1576,7 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("quizScore", quizScore);
     const quizScoreEl = document.getElementById("quizScore");
     if (quizScoreEl) quizScoreEl.textContent = quizScore;
+    updateSadhanaBadge();
 
     japCount = 0;
     localStorage.setItem("sadhanaJapCount", japCount);
@@ -1717,7 +1727,121 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("quizScore", quizScore);
       const quizScoreEl = document.getElementById("quizScore");
       if (quizScoreEl) quizScoreEl.textContent = quizScore;
+      updateSadhanaBadge();
     });
+  }
+
+  // --- Daily Guru Blessing Cards & Envelopes ---
+  const saintBlessings = {
+    kabir: [
+      {
+        hi: "🌸 कबीर साहेब का आशीर्वाद: 'चिंता ऐसी डाकिनी, काट कलेजा खाए।' आज सभी चिंताओं को प्रभु को सौंपकर निश्चिंत रहें। सब भला होगा।",
+        mr: "🌸 कबीर साहेबांचा आशिर्वाद: 'चिंता अशी डाकिनी आहे जी मन कुरतडते.' आज सर्व चिंता देवावर सोडून निश्चिंत राहा. सर्व चांगले होईल."
+      },
+      {
+        hi: "🌸 कबीर साहेब का आशीर्वाद: 'धीर धीरे रे मना, धीरे सब कुछ होय।' धैर्य रखें, आपके जीवन की सभी बाधाएं समय आने पर दूर हो जाएंगी।",
+        mr: "🌸 कबीर साहेबांचा आशिर्वाद: 'मना, धीर धर, हळूहळू सर्व काही होते.' संयम ठेवा, योग्य वेळी तुमच्या आयुष्यातील सर्व अडचणी दूर होतील."
+      },
+      {
+        hi: "🌸 कबीर साहेब का आशीर्वाद: 'सत्य बराबर तप नहीं, झूठ बराबर पाप।' सदैव सत्य और धर्म की राह पर चलें, आपकी विजय निश्चित है।",
+        mr: "🌸 कबीर साहेबांचा आशिर्वाद: 'सत्यासारखी दुसरी कोणतीही तपश्चर्या नाही.' नेहमी सत्य आणि धर्माच्या मार्गावर चाला, तुमचा विजय निश्चित आहे."
+      }
+    ],
+    meera: [
+      {
+        hi: "🌸 मीरा बाई का आशीर्वाद: 'पायो जी मैंने राम रतन धन पायो।' आज भक्ति भाव में डूब जाएं। प्रेम और श्रद्धा ही आपकी सबसे बड़ी संपत्ति है।",
+        mr: "🌸 मीरा बाईंचा आशिर्वाद: 'मी रामरूपी रत्नाचा ठेवा मिळवला आहे.' आज भक्ती भावात मग्न व्हा. प्रेम आणि श्रद्धा हीच तुमची सर्वात मोठी संपत्ती आहे."
+      },
+      {
+        hi: "🌸 मीरा बाई का आशीर्वाद: 'असुवन जल सींचि-सींचि प्रेम-बेलि बोई।' आपके धैर्य और निस्वार्थ प्रेम का फल अवश्य मिलेगा। विश्वास बनाए रखें।",
+        mr: "🌸 मीरा बाईंचा आशिर्वाद: 'अश्रूंच्या जलाने मी प्रेमाची वेल वाढवली आहे.' तुमच्या संयमाचे आणि निस्वार्थ प्रेमाचे फळ नक्कीच मिळेल. विश्वास ठेवा."
+      }
+    ],
+    tulsidas: [
+      {
+        hi: "🌸 तुलसीदास जी का आशीर्वाद: 'दया धरम का मूल है, पाप मूल अभिमान।' अभिमान को त्याग कर आज विनम्र बनें। प्रभु की कृपा बरसती रहेगी।",
+        mr: "🌸 तुलसीदास जींचा आशिर्वाद: 'दया हा धर्माचा मूळ पाया आहे आणि अभिमान हा पापाचे मूळ आहे.' गर्व त्यागून आज विनम्र व्हा. देवाची कृपा राहील."
+      },
+      {
+        hi: "🌸 तुलसीदास जी का आशीर्वाद: 'धीरज, धर्म, मित्र अरु नारी। आपद काल परिखिए चारी।' संकट के समय धैर्य और धर्म को न छोड़ें, ईश्वर आपकी सहायता करेंगे।",
+        mr: "🌸 तुलसीदास जींचा आशिर्वाद: 'संयम, धर्म, मित्र आणि पत्नी यांची परीक्षा संकटकाळात होते.' कठीण काळात संयम आणि धर्म सोडू नका, देव पाठीशी आहे."
+      }
+    ]
+  };
+
+  const envelopeCards = document.querySelectorAll(".envelope-card");
+  const blessingMessageArea = document.getElementById("blessingMessageArea");
+
+  envelopeCards.forEach(card => {
+    card.addEventListener("click", () => {
+      const saint = card.dataset.saint;
+      const openedDate = localStorage.getItem("blessingOpenedDate");
+      const todayDateStr = new Date().toDateString();
+
+      // Card flip visual effect
+      card.style.transform = "rotateY(360deg) scale(0.9)";
+      setTimeout(() => { card.style.transform = ""; }, 400);
+
+      if (openedDate === todayDateStr) {
+        // Already opened today
+        const savedBlessing = JSON.parse(localStorage.getItem("blessingOpenedMsg"));
+        showBlessing(savedBlessing);
+        alert("तुम्ही आजचा आशिर्वाद आधीच मिळवला आहे! (You have already received today's blessing!)");
+      } else {
+        // Open new blessing
+        const list = saintBlessings[saint];
+        const randomBlessing = list[Math.floor(Math.random() * list.length)];
+        
+        localStorage.setItem("blessingOpenedDate", todayDateStr);
+        localStorage.setItem("blessingOpenedMsg", JSON.stringify(randomBlessing));
+
+        // Award +5 points
+        quizScore += 5;
+        localStorage.setItem("quizScore", quizScore);
+        const quizScoreEl = document.getElementById("quizScore");
+        if (quizScoreEl) quizScoreEl.textContent = quizScore;
+        updateSadhanaBadge();
+
+        showBlessing(randomBlessing);
+        alert("Guru blessing envelope opened! +5 Chanting Points added! 🌸✉️");
+      }
+    });
+  });
+
+  function showBlessing(blessing) {
+    if (!blessingMessageArea) return;
+    blessingMessageArea.style.display = "block";
+    
+    // Choose active translation language
+    const msg = (activeTab === "mr") ? blessing.mr : blessing.hi;
+    blessingMessageArea.innerHTML = `<strong>🔮 आजचा गुरु संदेश:</strong><br><p style="margin-top:5px; font-style:italic; font-size:0.85rem;">"${msg}"</p>`;
+  }
+
+  // --- Chanting Rank / Bhakti Badges Logic ---
+  function updateSadhanaBadge() {
+    const userBadgeIcon = document.getElementById("userBadgeIcon");
+    const userBadgeName = document.getElementById("userBadgeName");
+    const userBadgeDesc = document.getElementById("userBadgeDesc");
+
+    if (!userBadgeIcon || !userBadgeName || !userBadgeDesc) return;
+
+    if (quizScore < 50) {
+      userBadgeIcon.textContent = "🥉";
+      userBadgeName.textContent = "Seeker / जिज्ञासू";
+      userBadgeDesc.textContent = `Points: ${quizScore}/50 for next level`;
+    } else if (quizScore >= 50 && quizScore < 150) {
+      userBadgeIcon.textContent = "🥈";
+      userBadgeName.textContent = "Disciple / शिष्य";
+      userBadgeDesc.textContent = `Points: ${quizScore}/150 for next level`;
+    } else if (quizScore >= 150 && quizScore < 300) {
+      userBadgeIcon.textContent = "🥇";
+      userBadgeName.textContent = "Meditator / साधक";
+      userBadgeDesc.textContent = `Points: ${quizScore}/300 for next level`;
+    } else {
+      userBadgeIcon.textContent = "💎";
+      userBadgeName.textContent = "Wisdom Soul / संत हृदय";
+      userBadgeDesc.textContent = `Points: ${quizScore} (Max level reached!)`;
+    }
   }
 
   // --- Mobile Hamburger Menu Toggle ---
@@ -1849,6 +1973,7 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("quizScore", quizScore);
       const quizScoreEl = document.getElementById("quizScore");
       if (quizScoreEl) quizScoreEl.textContent = quizScore;
+      updateSadhanaBadge();
 
       completeChallengeBtn.textContent = "Completed / पूर्ण केले! ✓";
       completeChallengeBtn.disabled = true;
@@ -2087,6 +2212,7 @@ document.addEventListener("DOMContentLoaded", () => {
   drawWheel();
   renderStreakCalendar();
   initJournal();
+  updateSadhanaBadge();
 
   // Wait for fonts, then draw first canvas frame
   setTimeout(drawPoster, 600);
