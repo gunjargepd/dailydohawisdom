@@ -88,6 +88,46 @@ document.addEventListener("DOMContentLoaded", () => {
       accentColor: "#ff9933",
       goldColor: "#ffd700",
       fontFamily: "'Rozha One', 'Yatra One', serif"
+    },
+    {
+      name: "Saffron Temple",
+      theme: "dark",
+      bgImageSrc: "assets/bg_temple_saffron.jpg",
+      colors: ["#993300", "#ff9933"],
+      textColor: "#ffffff",
+      accentColor: "#ffd700",
+      goldColor: "#ffffff",
+      fontFamily: "'Rozha One', 'Yatra One', serif"
+    },
+    {
+      name: "Golden Mandala",
+      theme: "dark",
+      bgImageSrc: "assets/bg_gold_mandala.jpg",
+      colors: ["#3d2b00", "#997300"],
+      textColor: "#ffffff",
+      accentColor: "#ff9933",
+      goldColor: "#fff1b8",
+      fontFamily: "'Rozha One', 'Yatra One', serif"
+    },
+    {
+      name: "Himalayan Om",
+      theme: "dark",
+      bgImageSrc: "assets/bg_himalaya_om.jpg",
+      colors: ["#120136", "#400082"],
+      textColor: "#ffffff",
+      accentColor: "#ffd700",
+      goldColor: "#ffffff",
+      fontFamily: "'Rozha One', 'Yatra One', serif"
+    },
+    {
+      name: "Cosmic Sun Aura",
+      theme: "dark",
+      bgImageSrc: "assets/bg_cosmic_sun.jpg",
+      colors: ["#3d0c02", "#801100"],
+      textColor: "#ffffff",
+      accentColor: "#ffcc00",
+      goldColor: "#ffffff",
+      fontFamily: "'Rozha One', 'Yatra One', serif"
     }
   ];
 
