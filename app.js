@@ -78,8 +78,30 @@ document.addEventListener("DOMContentLoaded", () => {
       accentColor: "#cc6600",
       goldColor: "#997300",
       fontFamily: "'Rozha One', 'Yatra One', serif"
+    },
+    {
+      name: "Divine Flute & Peacock",
+      theme: "dark",
+      bgImageSrc: "assets/cosmic_peacock_bg.jpg",
+      colors: ["#120136", "#400082"],
+      textColor: "#ffffff",
+      accentColor: "#ff9933",
+      goldColor: "#ffd700",
+      fontFamily: "'Rozha One', 'Yatra One', serif"
     }
   ];
+
+  // Preload background image presets
+  backgroundPresets.forEach(preset => {
+    if (preset.bgImageSrc) {
+      const img = new Image();
+      img.src = preset.bgImageSrc;
+      img.onload = () => {
+        preset.loadedBgImage = img;
+        drawPoster();
+      };
+    }
+  });
 
   // --- HTML5 Canvas Setup ---
   const canvas = document.getElementById("posterCanvas");
@@ -153,6 +175,9 @@ document.addEventListener("DOMContentLoaded", () => {
       // Draw translucent black tint overlay for text readability
       ctx.fillStyle = `rgba(7, 5, 18, ${tintOpacity / 100})`;
       ctx.fillRect(0, 0, width, height);
+    } else if (preset.loadedBgImage) {
+      // Draw preloaded background image preset
+      ctx.drawImage(preset.loadedBgImage, 0, 0, width, height);
     } else {
       // Draw gradient
       const grad = ctx.createLinearGradient(0, 0, width, height);
@@ -754,13 +779,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("toggleAudioBtn").addEventListener("click", toggleAudio);
 
-  // --- Dynamic Canvas Preset Render & Click binding ---
   const presetContainer = document.getElementById("presetColorPicker");
   backgroundPresets.forEach((preset, index) => {
     const btn = document.createElement("button");
     btn.className = `preset-color-btn ${index === activePreset ? 'active' : ''}`;
     btn.title = preset.name;
-    btn.style.background = `linear-gradient(135deg, ${preset.colors[0]} 0%, ${preset.colors[1]} 100%)`;
+    
+    if (preset.bgImageSrc) {
+      btn.style.background = `url('${preset.bgImageSrc}')`;
+      btn.style.backgroundSize = "cover";
+      btn.style.backgroundPosition = "center";
+    } else {
+      btn.style.background = `linear-gradient(135deg, ${preset.colors[0]} 0%, ${preset.colors[1]} 100%)`;
+    }
     
     btn.addEventListener("click", () => {
       // Clear uploaded image to show preset color
