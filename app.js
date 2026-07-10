@@ -491,6 +491,41 @@ document.addEventListener("DOMContentLoaded", () => {
       .replace(/[\\/#$%^&*@]/g, "");
   }
 
+  // High-Quality Google Translate Neural TTS
+  function speakGoogleTTS(text, lang) {
+    if (window.currentAudioTTS) {
+      window.currentAudioTTS.pause();
+    }
+    const cleanText = cleanTextForSpeech(text);
+    const tl = lang === "hi" ? "hi" : (lang === "mr" ? "mr" : "en");
+    
+    // Split into chunks of 180 chars to respect Google's 200 char limit
+    const chunks = cleanText.match(/.{1,180}(?=\s|$)/g) || [cleanText];
+    let currentChunkIndex = 0;
+    
+    function playNextChunk() {
+      if (currentChunkIndex >= chunks.length) {
+        handleNarrationEnded();
+        return;
+      }
+      const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${tl}&client=tw-ob&q=${encodeURIComponent(chunks[currentChunkIndex])}`;
+      const audio = new Audio(ttsUrl);
+      window.currentAudioTTS = audio;
+      
+      audio.addEventListener("ended", () => {
+        currentChunkIndex++;
+        playNextChunk();
+      });
+      
+      audio.play().catch(err => {
+        console.warn("Failed to play Google Translate TTS chunk, fallback to local Synthesis", err);
+        speakLocalSynthesisFallback(text, lang);
+      });
+    }
+    
+    playNextChunk();
+  }
+
   // Fallback to local browser Speech Synthesis if offline or custom text is typed
   function speakLocalSynthesisFallback(text, lang) {
     if ('speechSynthesis' in window) {
@@ -506,11 +541,12 @@ document.addEventListener("DOMContentLoaded", () => {
       
       utterance.pitch = 1.0;
       utterance.rate = 0.85;
+      utterance.addEventListener("end", handleNarrationEnded);
       window.speechSynthesis.speak(utterance);
     }
   }
 
-  // Plays pre-recorded natural human voice MP3s, falling back to Web Speech API if customized
+  // Plays pre-recorded natural human voice MP3s, falling back to Google Neural TTS if customized/missing
   function playDohaVoice(dohaObj, type = "doha", langPref = "hi") {
     if (window.currentAudioTTS) {
       window.currentAudioTTS.pause();
@@ -526,11 +562,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const isCustomTrans = customTranslationText.trim() !== "";
     
     if (type === "doha" && isCustomDoha) {
-      speakLocalSynthesisFallback(customDohaText, "hi");
+      speakGoogleTTS(customDohaText, "hi");
       return;
     }
     if (type === "meaning" && isCustomTrans) {
-      speakLocalSynthesisFallback(customTranslationText, langPref);
+      speakGoogleTTS(customTranslationText, langPref);
       return;
     }
 
@@ -542,10 +578,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const audio = new Audio(audioPath);
     window.currentAudioTTS = audio;
     
+    audio.addEventListener("ended", handleNarrationEnded);
+
     return audio.play().catch(err => {
-      console.warn("Failed to play local audio file, using synthesis fallback", err);
+      console.warn("Failed to play local audio file, using Google TTS fallback", err);
       const textToSpeak = type === "doha" ? dohaObj.original : (langPref === "mr" ? dohaObj.translation_mr : (langPref === "hi" ? dohaObj.translation_hi : dohaObj.translation_en));
-      speakLocalSynthesisFallback(textToSpeak, langPref);
+      speakGoogleTTS(textToSpeak, langPref);
     });
   }
 
