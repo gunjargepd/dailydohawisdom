@@ -750,7 +750,14 @@
     <div class="modal-content glass-panel" style="max-width: 450px; width: 90%; position: relative; padding: 25px; border-radius: 16px; border: 1px solid var(--border-gold); background: rgba(13, 14, 21, 0.95);">
       <button id="closeSadhanaModal" class="modal-close-btn">&times;</button>
       <h3 style="margin-bottom: 0.5rem; text-align: center; color: var(--brand-gold); font-family: var(--font-header); font-size: 1.4rem;">📿 दैनिक ध्यान आणि जप साधना</h3>
-      <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-bottom: 1.5rem;">Practice mindful breathing or count your daily mantra chanting.</p>
+      <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-bottom: 1.2rem;">Practice daily spiritual breathing or chant mantras.</p>
+      
+      <!-- Daily Challenge Subsection -->
+      <div class="daily-challenge-box" style="background: rgba(255,153,51,0.04); border: 1px solid var(--border-gold); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 15px;">
+        <span style="font-size: 0.82rem; font-weight: 700; color: var(--brand-gold); text-transform: uppercase; letter-spacing: 0.5px;">🎯 Today's Sadhana / आजचे आव्हान</span>
+        <div id="dailyChallengeText" style="font-size: 0.95rem; font-weight: bold; text-align: center; color: #ffffff; margin: 4px 0;">Loading daily challenge...</div>
+        <button id="completeChallengeBtn" class="action-btn" style="padding: 6px 14px; font-size: 0.8rem; margin-top: 5px; background: linear-gradient(135deg, var(--brand-gold) 0%, #b3921b 100%); color: #0d0e15; border: none; font-weight: bold;">✓ Complete / पूर्ण केले</button>
+      </div>
       
       <!-- Breathing Guide Subsection -->
       <div class="breathing-guide-box" style="background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 15px;">
@@ -796,6 +803,63 @@
         <p><strong>1. Information Collection:</strong> We do not collect or store any personal user data on our servers. All stats, quiz scores, sadhana calendars, and journal entries are stored strictly locally in your browser's local storage.</p>
         <p style="margin-top: 10px;"><strong>2. Cookies & Advertising:</strong> We may use third-party tools like Google AdSense to show interest-based advertisements in the future to support the running cost. These networks may use cookies to personalize ads.</p>
         <p style="margin-top: 10px;"><strong>3. Contact:</strong> For any questions, contact us via our official YouTube channel @dailydohawisdom.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Doha Guru AI Chatbot Floating Widget -->
+  <div id="chatWidgetContainer">
+    <!-- Floating Bubble Button -->
+    <button id="chatBubbleBtn" class="chat-bubble-btn" title="Ask Doha Guru / आध्यात्मिक मार्गदर्शक">
+      🧘<span>AI</span>
+    </button>
+
+    <!-- Chat Box Window -->
+    <div id="chatBoxWindow" class="chat-box-window glass-panel" style="display: none;">
+      <div class="chat-box-header">
+        <div class="chat-guru-profile">
+          <div class="chat-guru-avatar" style="background-image: url('assets/kabir_avatar.jpg');"></div>
+          <div>
+            <h4>Doha Guru / आध्यात्मिक मार्गदर्शक</h4>
+            <span class="chat-status-indicator">Online 🟢</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button id="chatSettingsBtn" class="chat-header-action-btn" title="AI Settings / एआय सेटिंग्ज">⚙️</button>
+          <button id="closeChatBtn" class="chat-header-action-btn" style="font-size: 1.4rem;">&times;</button>
+        </div>
+      </div>
+
+      <!-- Settings Panel inside Chat window (initially hidden) -->
+      <div id="chatSettingsPanel" class="chat-settings-panel" style="display: none;">
+        <h5>⚙️ Configure AI Guru / एआय सेटिंग्स</h5>
+        <p style="font-size: 0.72rem; opacity: 0.8; margin-bottom: 8px;">Enter Google Gemini API Key to enable infinite live intelligent chats. Saved locally.</p>
+        <input type="password" id="geminiApiKeyInput" placeholder="Enter Gemini API Key..." style="width: 100%; padding: 8px; border: 1px solid var(--border-gold); background: #0d0e15; color: white; border-radius: 8px; font-size: 0.8rem; margin-bottom: 8px; outline: none;">
+        <button id="saveApiKeyBtn" class="action-btn text-btn" style="font-size: 0.72rem; padding: 4px 10px; width: 100%;">💾 Save / सेव्ह करा</button>
+      </div>
+
+      <!-- Messages Body -->
+      <div id="chatMessagesList" class="chat-messages-list">
+        <div class="chat-msg bot-msg">
+          <p>नमस्ते! मैं 'दोहा गुरु' हूँ। आप मुझसे अध्यात्म, भक्ति, कर्म या जीवन दर्शन के बारे में कोई भी प्रश्न पूछ सकते हैं।</p>
+        </div>
+        <div class="chat-msg bot-msg">
+          <p>आप नीचे दिए गए विषयों पर भी क्लिक कर सकते हैं:</p>
+        </div>
+      </div>
+
+      <!-- Quick Suggestion Chips -->
+      <div class="chat-quick-chips">
+        <button class="chat-chip" data-query="चिंता दूर करने का दोहा">😟 चिंता / Stress</button>
+        <button class="chat-chip" data-query="क्रोध शांत करने का दोहा">😡 क्रोध / Anger</button>
+        <button class="chat-chip" data-query="कर्म सिद्धांत क्या है">📿 कर्म / Karma</button>
+        <button class="chat-chip" data-query="सच्चा गुरु कौन है">🧘 गुरु / True Guru</button>
+      </div>
+
+      <!-- Input Actions -->
+      <div class="chat-input-row">
+        <textarea id="chatInputText" placeholder="Ask Guru... / प्रश्न विचारा..." rows="1"></textarea>
+        <button id="sendChatMsgBtn" class="chat-send-btn">➔</button>
       </div>
     </div>
   </div>

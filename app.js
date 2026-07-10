@@ -934,6 +934,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (activeTab === "mr") translationTextEl.textContent = currentDoha.translation_mr;
     else if (activeTab === "hi") translationTextEl.textContent = currentDoha.translation_hi;
     else translationTextEl.textContent = currentDoha.translation_en;
+
+    renderDailyChallenge();
   }
 
   // --- Library Rendering ---
@@ -1776,6 +1778,304 @@ document.addEventListener("DOMContentLoaded", () => {
     privacyModal.addEventListener("click", (e) => {
       if (e.target === privacyModal) privacyModal.style.display = "none";
     });
+  }
+
+  // --- Daily Sadhana Tasks (Challenge of the Day) ---
+  const dailySadhanaTasks = [
+    {
+      task_hi: "आज दिनभर किसी से कटु शब्द न बोलें। (वाणी संयम)",
+      task_mr: "आज दिवसभरात कोणाशीही उद्धट बोलू नका. (वाणी संयम)",
+      task_en: "Practice sweet speech. Avoid harsh words all day today."
+    },
+    {
+      task_hi: "सुबह या शाम को ५ मिनट आंखें बंद कर श्वास पर ध्यान लगाएं।",
+      task_mr: "सकाळी किंवा संध्याकाळी ५ मिनिटे डोळे मिटून श्वासावर लक्ष केंद्रित करा.",
+      task_en: "Practice mindful breathing for 5 minutes today."
+    },
+    {
+      task_hi: "आज भोजन करने से पहले ईश्वर का आभार व्यक्त करें।",
+      task_mr: "आज जेवण्यापूर्वी देवाचे आभार माना (भोजन प्रार्थना).",
+      task_en: "Say a quiet prayer of gratitude before eating your meals today."
+    },
+    {
+      task_hi: "आज किसी जरूरतमंद व्यक्ति या पशु-पक्षी की सहायता करें।",
+      task_mr: "आज गरजू व्यक्तीला किंवा मुक्या प्राण्याला/पक्षाला मदत करा.",
+      task_en: "Help someone in need or feed a stray animal/bird today."
+    },
+    {
+      task_hi: "आज क्रोध आने पर मौन रहने का अभ्यास करें।",
+      task_mr: "आज राग आल्यावर शांत (मौन) राहण्याचा सराव करा.",
+      task_en: "Practice silence (mauna) for 1 minute if you feel angry today."
+    },
+    {
+      task_hi: "आज संतों का कोई एक भजन शांत मन से सुनें।",
+      task_mr: "आज संतांचे एखादे भजन शांत मनाने ऐका.",
+      task_en: "Listen to a spiritual bhajan mindfully today."
+    },
+    {
+      task_hi: "आज १० मिनट मौन (मौन साधना) धारण करें।",
+      task_mr: "आज १० मिनिटे मौन (मौन साधना) बाळगा.",
+      task_en: "Observe absolute silence for 10 minutes today."
+    }
+  ];
+
+  const todayDateStr = new Date().toDateString();
+  const currentTask = dailySadhanaTasks[dayOfYearIndex % dailySadhanaTasks.length];
+  const challengeTextEl = document.getElementById("dailyChallengeText");
+  const completeChallengeBtn = document.getElementById("completeChallengeBtn");
+
+  function renderDailyChallenge() {
+    if (!challengeTextEl) return;
+    if (activeTab === "hi") challengeTextEl.textContent = currentTask.task_hi;
+    else if (activeTab === "mr") challengeTextEl.textContent = currentTask.task_mr;
+    else challengeTextEl.textContent = currentTask.task_en;
+
+    // Check completion status
+    const isCompleted = localStorage.getItem("sadhanaTaskCompleted_" + todayDateStr) === "true";
+    if (isCompleted && completeChallengeBtn) {
+      completeChallengeBtn.textContent = "Completed / पूर्ण केले! ✓";
+      completeChallengeBtn.disabled = true;
+      completeChallengeBtn.style.background = "#2ecc71";
+      completeChallengeBtn.style.color = "#ffffff";
+    }
+  }
+
+  if (completeChallengeBtn) {
+    completeChallengeBtn.addEventListener("click", () => {
+      localStorage.setItem("sadhanaTaskCompleted_" + todayDateStr, "true");
+      
+      // Award +10 points to streak score
+      quizScore += 10;
+      localStorage.setItem("quizScore", quizScore);
+      const quizScoreEl = document.getElementById("quizScore");
+      if (quizScoreEl) quizScoreEl.textContent = quizScore;
+
+      completeChallengeBtn.textContent = "Completed / पूर्ण केले! ✓";
+      completeChallengeBtn.disabled = true;
+      completeChallengeBtn.style.background = "#2ecc71";
+      completeChallengeBtn.style.color = "#ffffff";
+
+      // Increment streak calendar completion mark
+      markStreakCalendarToday();
+      alert("Spiritual Challenge Completed! +10 Points added to your sadhana! 🌸");
+    });
+  }
+
+  function markStreakCalendarToday() {
+    // Utility to mark calendar grid dynamically
+    const todayNum = new Date().getDate();
+    const calendarGrid = document.getElementById("streakCalendarGrid");
+    if (calendarGrid) {
+      const days = calendarGrid.querySelectorAll(".calendar-day");
+      days.forEach(day => {
+        if (parseInt(day.textContent) === todayNum) {
+          day.classList.add("completed");
+        }
+      });
+    }
+  }
+
+  // --- Doha Guru AI Chatbot Core Logic ---
+  const chatBubbleBtn = document.getElementById("chatBubbleBtn");
+  const chatBoxWindow = document.getElementById("chatBoxWindow");
+  const closeChatBtn = document.getElementById("closeChatBtn");
+  const chatSettingsBtn = document.getElementById("chatSettingsBtn");
+  const chatSettingsPanel = document.getElementById("chatSettingsPanel");
+  const geminiApiKeyInput = document.getElementById("geminiApiKeyInput");
+  const saveApiKeyBtn = document.getElementById("saveApiKeyBtn");
+  const chatMessagesList = document.getElementById("chatMessagesList");
+  const chatInputText = document.getElementById("chatInputText");
+  const sendChatMsgBtn = document.getElementById("sendChatMsgBtn");
+
+  // Load Saved API Key
+  if (geminiApiKeyInput) {
+    geminiApiKeyInput.value = localStorage.getItem("gemini_api_key") || "";
+  }
+
+  if (saveApiKeyBtn && geminiApiKeyInput) {
+    saveApiKeyBtn.addEventListener("click", () => {
+      const key = geminiApiKeyInput.value.trim();
+      localStorage.setItem("gemini_api_key", key);
+      alert(key ? "API Key saved successfully! Live AI activated. 🔒" : "API Key cleared. Offline Smart Mode activated.");
+      chatSettingsPanel.style.display = "none";
+    });
+  }
+
+  // Toggle Chat Box
+  if (chatBubbleBtn && chatBoxWindow) {
+    chatBubbleBtn.addEventListener("click", () => {
+      const isOpen = chatBoxWindow.style.display === "flex";
+      chatBoxWindow.style.display = isOpen ? "none" : "flex";
+      if (!isOpen) {
+        scrollToBottom();
+        chatInputText.focus();
+      }
+    });
+  }
+
+  if (closeChatBtn && chatBoxWindow) {
+    closeChatBtn.addEventListener("click", () => {
+      chatBoxWindow.style.display = "none";
+    });
+  }
+
+  if (chatSettingsBtn && chatSettingsPanel) {
+    chatSettingsBtn.addEventListener("click", () => {
+      const isOpen = chatSettingsPanel.style.display === "block";
+      chatSettingsPanel.style.display = isOpen ? "none" : "block";
+    });
+  }
+
+  // Append Chat Message Helper
+  function appendChatMessage(text, sender) {
+    if (!chatMessagesList) return;
+    const msgDiv = document.createElement("div");
+    msgDiv.className = `chat-msg ${sender === 'user' ? 'user-msg' : 'bot-msg'}`;
+    msgDiv.innerHTML = `<p>${text.replace(/\n/g, '<br>')}</p>`;
+    chatMessagesList.appendChild(msgDiv);
+    scrollToBottom();
+  }
+
+  function scrollToBottom() {
+    if (chatMessagesList) {
+      chatMessagesList.scrollTop = chatMessagesList.scrollHeight;
+    }
+  }
+
+  // Handle suggestion chips click
+  document.querySelectorAll(".chat-chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      const query = chip.dataset.query;
+      handleSendMessage(query);
+    });
+  });
+
+  if (sendChatMsgBtn && chatInputText) {
+    sendChatMsgBtn.addEventListener("click", () => {
+      const query = chatInputText.value.trim();
+      if (query) {
+        handleSendMessage(query);
+        chatInputText.value = "";
+      }
+    });
+
+    chatInputText.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        const query = chatInputText.value.trim();
+        if (query) {
+          handleSendMessage(query);
+          chatInputText.value = "";
+        }
+      }
+    });
+  }
+
+  // Core Send message function
+  function handleSendMessage(query) {
+    appendChatMessage(query, 'user');
+    
+    // Show typing placeholder
+    const typingIndicator = document.createElement("div");
+    typingIndicator.className = "chat-msg bot-msg typing-msg";
+    typingIndicator.innerHTML = `<p><em>Guru is thinking... / गुरु विचार करत आहेत...</em></p>`;
+    if (chatMessagesList) {
+      chatMessagesList.appendChild(typingIndicator);
+      scrollToBottom();
+    }
+
+    const apiKey = localStorage.getItem("gemini_api_key") || "";
+
+    if (apiKey) {
+      // Live Gemini AI Request
+      const systemInstruction = "You are 'Doha Guru', a wise spiritual guide. Answer questions about spirituality, devotion, and life using the teachings of Kabir Saheb, Meera Bai, Rahim, Garib Das, and Tulsidas. Suggest relevant dohas from Indian saints. Answer in the user's language (Hindi, Marathi, or English). Keep answers concise and full of wisdom.";
+      
+      fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: query }]
+            }
+          ],
+          systemInstruction: {
+            parts: [{ text: systemInstruction }]
+          }
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        removeTypingIndicator();
+        if (data.candidates && data.candidates[0].content.parts[0].text) {
+          appendChatMessage(data.candidates[0].content.parts[0].text, 'bot');
+        } else {
+          appendChatMessage("क्षमा करें, मैं अभी आपकी सहायता करने में असमर्थ हूँ। कृपया पुनः प्रयास करें।", 'bot');
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        removeTypingIndicator();
+        appendChatMessage("Error connecting to Live AI. Switching to Offline Mode... / लाईव्ह कनेक्ट करण्यात अडचण आली, ऑफलाईन मोड सुरू आहे.", 'bot');
+        processOfflineResponse(query);
+      });
+    } else {
+      // Offline Smart Response Fallback
+      setTimeout(() => {
+        removeTypingIndicator();
+        processOfflineResponse(query);
+      }, 800);
+    }
+  }
+
+  function removeTypingIndicator() {
+    const typingMsg = document.querySelector(".typing-msg");
+    if (typingMsg && chatMessagesList) {
+      chatMessagesList.removeChild(typingMsg);
+    }
+  }
+
+  // Local keywords matching for Offline mode
+  function processOfflineResponse(query) {
+    const lowerQuery = query.toLowerCase();
+    
+    let matchedTopic = "all";
+    if (lowerQuery.includes("चिंता") || lowerQuery.includes("stress") || lowerQuery.includes("tension") || lowerQuery.includes("घबराहट")) {
+      matchedTopic = "peace";
+    } else if (lowerQuery.includes("क्रोध") || lowerQuery.includes("राग") || lowerQuery.includes("anger") || lowerQuery.includes("राग आला")) {
+      matchedTopic = "peace";
+    } else if (lowerQuery.includes("कर्म") || lowerQuery.includes("karma") || lowerQuery.includes("काम")) {
+      matchedTopic = "karma";
+    } else if (lowerQuery.includes("गुरु") || lowerQuery.includes("मार्गदर्शक") || lowerQuery.includes("guru")) {
+      matchedTopic = "devotion";
+    } else if (lowerQuery.includes("सत्य") || lowerQuery.includes("truth") || lowerQuery.includes("खरे")) {
+      matchedTopic = "truth";
+    } else if (lowerQuery.includes("भक्ती") || lowerQuery.includes("devotion") || lowerQuery.includes("भजन") || lowerQuery.includes("प्रेम") || lowerQuery.includes("love")) {
+      matchedTopic = "devotion";
+    }
+
+    // Filter relevant doha
+    let filteredList = dohas.filter(item => item.category === matchedTopic);
+    if (filteredList.length === 0) filteredList = dohas;
+    
+    // Select random matching doha
+    const randomDoha = filteredList[Math.floor(Math.random() * filteredList.length)];
+    
+    let responseText = "";
+    if (matchedTopic === "peace") {
+      responseText = `🧘 *चिंता और क्रोध दूर करने का संदेश:*\n\n"${randomDoha.original}"\n- ${randomDoha.author}\n\n*अर्थ (मराठी):* ${randomDoha.translation_mr}\n*अर्थ (Hindi):* ${randomDoha.translation_hi}`;
+    } else if (matchedTopic === "karma") {
+      responseText = `📿 *कर्म सिद्धांत पर संतों के विचार:*\n\n"${randomDoha.original}"\n- ${randomDoha.author}\n\n*अर्थ (मराठी):* ${randomDoha.translation_mr}\n*अर्थ (Hindi):* ${randomDoha.translation_hi}`;
+    } else if (matchedTopic === "devotion") {
+      responseText = `🙏 *भक्ति और गुरु महिमा का संदेश:*\n\n"${randomDoha.original}"\n- ${randomDoha.author}\n\n*अर्थ (मराठी):* ${randomDoha.translation_mr}\n*अर्थ (Hindi):* ${randomDoha.translation_hi}`;
+    } else {
+      responseText = `🌸 *संतों की अनमोल वाणी:*\n\n"${randomDoha.original}"\n- ${randomDoha.author}\n\n*अर्थ (मराठी):* ${randomDoha.translation_mr}\n*अर्थ (Hindi):* ${randomDoha.translation_hi}`;
+    }
+    
+    appendChatMessage(responseText, 'bot');
   }
 
   // --- Initialize App ---
