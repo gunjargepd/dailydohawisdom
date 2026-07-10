@@ -1654,6 +1654,44 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // --- Visitor Counter & Stats Logic ---
+  let visitCount = parseInt(localStorage.getItem("totalVisits")) || 384;
+  visitCount++;
+  localStorage.setItem("totalVisits", visitCount);
+  const totalVisitsCountEl = document.getElementById("totalVisitsCount");
+  if (totalVisitsCountEl) totalVisitsCountEl.textContent = visitCount;
+
+  const onlineUsersCountEl = document.getElementById("onlineUsersCount");
+  if (onlineUsersCountEl) {
+    const updateOnlineUsers = () => {
+      // Simulate active users online between 3 and 10
+      const randomUsers = Math.floor(Math.random() * 8) + 3;
+      onlineUsersCountEl.textContent = randomUsers;
+    };
+    updateOnlineUsers();
+    setInterval(updateOnlineUsers, 15000); // Update count every 15 seconds
+  }
+
+  // --- Privacy Policy Modal Logic ---
+  const privacyModal = document.getElementById("privacyModal");
+  const privacyPolicyBtn = document.getElementById("privacyPolicyBtn");
+  const closePrivacyModal = document.getElementById("closePrivacyModal");
+
+  if (privacyPolicyBtn && privacyModal && closePrivacyModal) {
+    privacyPolicyBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      privacyModal.style.display = "flex";
+    });
+
+    closePrivacyModal.addEventListener("click", () => {
+      privacyModal.style.display = "none";
+    });
+
+    privacyModal.addEventListener("click", (e) => {
+      if (e.target === privacyModal) privacyModal.style.display = "none";
+    });
+  }
+
   // --- Initialize App ---
   updateFeaturedDohaDisplay();
   renderLibrary();
