@@ -1059,7 +1059,7 @@ main {
 .audio-floating-control {
   position: fixed;
   bottom: 25px;
-  right: 25px;
+  right: 95px;
   z-index: 1000;
 }
 
