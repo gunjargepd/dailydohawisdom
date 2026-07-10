@@ -818,8 +818,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   document.getElementById("toggleAudioBtn").addEventListener("click", toggleAudio);
+  const gradientsContainer = document.getElementById("presetGradientsPicker");
+  const imagesContainer = document.getElementById("presetImagesPicker");
 
-  const presetContainer = document.getElementById("presetColorPicker");
   backgroundPresets.forEach((preset, index) => {
     const btn = document.createElement("button");
     btn.className = `preset-color-btn ${index === activePreset ? 'active' : ''}`;
@@ -829,23 +830,37 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.style.background = `url('${preset.bgImageSrc}')`;
       btn.style.backgroundSize = "cover";
       btn.style.backgroundPosition = "center";
+      
+      btn.addEventListener("click", () => {
+        // Clear uploaded image to show preset color
+        uploadedBgImage = null;
+        tintControls.style.display = "none";
+        bgUploadInput.value = ""; // Reset file input
+        
+        document.querySelectorAll(".preset-color-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        activePreset = index;
+        drawPoster();
+      });
+      
+      if (imagesContainer) imagesContainer.appendChild(btn);
     } else {
       btn.style.background = `linear-gradient(135deg, ${preset.colors[0]} 0%, ${preset.colors[1]} 100%)`;
-    }
-    
-    btn.addEventListener("click", () => {
-      // Clear uploaded image to show preset color
-      uploadedBgImage = null;
-      tintControls.style.display = "none";
-      bgUploadInput.value = ""; // Reset file input
       
-      document.querySelectorAll(".preset-color-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      activePreset = index;
-      drawPoster();
-    });
-    
-    presetContainer.appendChild(btn);
+      btn.addEventListener("click", () => {
+        // Clear uploaded image to show preset color
+        uploadedBgImage = null;
+        tintControls.style.display = "none";
+        bgUploadInput.value = ""; // Reset file input
+        
+        document.querySelectorAll(".preset-color-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        activePreset = index;
+        drawPoster();
+      });
+      
+      if (gradientsContainer) gradientsContainer.appendChild(btn);
+    }
   });
 
   // Aspect controls
