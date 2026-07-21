@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spiritual Articles & Wisdom / अध्यात्मिक लेख - Daily Doha Wisdom</title>
+  
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9070993472101439"
+     crossorigin="anonymous"></script>
+  
+  <!-- Meta Tags -->
+  <meta name="description" content="Read in-depth spiritual articles on Sant Kabir Saheb, Meera Bai, Rahim, Sant Garib Das Ji, Tulsidas, Law of Karma, and Meditation techniques.">
+  <link rel="stylesheet" href="style.css?v=1.6">
+  <style>
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+    .article-card {
+      background: rgba(13, 14, 21, 0.95);
+      border: 1px solid var(--border-gold);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .article-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.25);
+    }
+    .article-card-img {
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+    }
+    .article-card-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .article-badge {
+      background: rgba(255, 153, 51, 0.15);
+      color: var(--brand-saffron);
+      border: 1px solid var(--brand-saffron);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      align-self: flex-start;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .article-title {
+      font-family: var(--font-header);
+      font-size: 1.15rem;
+      color: var(--brand-gold);
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .article-summary {
+      font-size: 0.88rem;
+      color: var(--text-cream);
+      opacity: 0.9;
+      line-height: 1.6;
+      margin-bottom: 15px;
+      flex: 1;
+    }
+    .article-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px dashed rgba(255,255,255,0.1);
+      padding-top: 10px;
+    }
+    .read-more-btn {
+      background: linear-gradient(135deg, var(--brand-gold) 0%, #b3921b 100%);
+      color: #0d0e15;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.85rem;
+      margin-top: 10px;
+      text-align: center;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body class="dark-mode">
+
+  <!-- ======= Header ======= -->
+  <header>
+    <div class="header-container">
+      <a href="index.html" class="logo-section">
+        <svg class="logo-svg" width="45" height="45" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="60" r="50" fill="url(#bgGlow)" opacity="0.25"/>
+          <g transform="rotate(-15 60 60)">
+            <rect x="15" y="53" width="90" height="12" rx="6" fill="#D4AF37" stroke="#D4AF37" stroke-width="1.5"/>
+          </g>
+        </svg>
+        <div class="logo-text">
+          <h1>Daily Doha <span>Wisdom</span></h1>
+          <p class="tagline">ज्ञान, भक्ति और आध्यात्मिक जीवन दर्शन</p>
+        </div>
+      </a>
+      <nav class="main-nav">
+        <ul class="nav-links">
+          <li><a href="index.html">🏠 Home / मुख्य पृष्ठ</a></li>
+          <li><a href="articles.html" class="active">📖 Articles / लेख</a></li>
+          <li><a href="about.html">ℹ️ About Us / परिचय</a></li>
+          <li><a href="contact.html">✉️ Contact / संपर्क</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ======= Main Content ======= -->
+  <main class="page-container" style="max-width: 1100px; margin: 40px auto; padding: 0 20px;">
+    
+    <div style="text-align: center; margin-bottom: 30px;">
+      <h1 style="color: var(--brand-gold); font-family: var(--font-header); font-size: 2.2rem; margin-bottom: 10px;">📖 आध्यात्मिक लेख और जीवन दर्शन</h1>
+      <p style="color: var(--text-cream); font-size: 1rem; max-width: 700px; margin: 0 auto; opacity: 0.9;">
+        संत कबीर साहेब, भक्त मीरा बाई, रहीम दास जी, संत गरीबदास जी और तुलसीदास जी के आध्यात्मिक विचारों और जीवन दर्शन का सविस्तर अध्ययन करें।
+      </p>
+    </div>
+
+    <!-- Articles Container View -->
+    <div id="articlesGrid" class="articles-grid">
+      <!-- Rendered dynamically via JS or rendered fallback -->
+    </div>
+
+    <!-- Article Detail View Modal Container -->
+    <div id="articleDetailModal" class="modal-overlay" style="display: none;">
+      <div class="modal-content glass-panel" style="max-width: 800px; width: 92%; padding: 30px; border-radius: 16px; border: 1px solid var(--border-gold); background: rgba(13, 14, 21, 0.98); max-height: 85vh; overflow-y: auto;">
+        <button id="closeArticleModal" class="modal-close-btn" style="position: absolute; right: 20px; top: 20px; background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer;">&times;</button>
+        <div id="articleDetailBody">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ======= Footer ======= -->
+  <footer class="main-footer" style="margin-top: 60px;">
+    <div class="footer-bottom" style="text-align: center; padding: 20px; border-top: 1px solid rgba(212, 175, 55, 0.2);">
+      <p>© 2026 Daily Doha Wisdom. All Rights Reserved.</p>
+      <p style="font-size: 0.8rem; margin-top: 8px;">
+        <a href="about.html" style="color: var(--brand-gold);">About Us</a> | 
+        <a href="contact.html" style="color: var(--brand-gold);">Contact Us</a> | 
+        <a href="privacy.html" style="color: var(--brand-gold);">Privacy Policy</a> | 
+        <a href="terms.html" style="color: var(--brand-gold);">Terms & Conditions</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="articles.js?v=1.6"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const grid = document.getElementById("articlesGrid");
+      const modal = document.getElementById("articleDetailModal");
+      const closeBtn = document.getElementById("closeArticleModal");
+      const detailBody = document.getElementById("articleDetailBody");
+
+      if (grid && typeof articlesData !== "undefined") {
+        grid.innerHTML = articlesData.map(art => `
+          <div class="article-card">
+            <div class="article-card-img" style="background-image: url('${art.image}');"></div>
+            <div class="article-card-body">
+              <span class="article-badge">${art.category}</span>
+              <h2 class="article-title">${art.title_hi}</h2>
+              <p class="article-summary">${art.summary_hi}</p>
+              <div class="article-meta">
+                <span>⏱️ ${art.readTime}</span>
+                <span>📅 ${art.date}</span>
+              </div>
+              <button class="read-more-btn" onclick="openArticle('${art.id}')">📖 पढ़ें (Read Article)</button>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      window.openArticle = function(id) {
+        const art = articlesData.find(a => a.id === id);
+        if (art && detailBody && modal) {
+          detailBody.innerHTML = `
+            <span style="background: rgba(255,153,51,0.2); color: var(--brand-saffron); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">${art.category}</span>
+            <h1 style="color: var(--brand-gold); font-family: var(--font-header); font-size: 1.8rem; margin: 15px 0 10px 0;">${art.title_hi}</h1>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+              By ${art.author} | ${art.date} | ${art.readTime}
+            </p>
+            <div class="article-full-content" style="color: var(--text-cream); line-height: 1.8; font-size: 1rem;">
+              ${art.content_hi}
+            </div>
+          `;
+          modal.style.display = "flex";
+        }
+      };
+
+      if (closeBtn && modal) {
+        closeBtn.addEventListener("click", () => { modal.style.display = "none"; });
+        modal.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
+      }
+
+      // Check URL parameters for direct article opening
+      const urlParams = new URLSearchParams(window.location.search);
+      const articleId = urlParams.get("id");
+      if (articleId) {
+        openArticle(articleId);
+      }
+    });
+  </script>
+</body>
+</html>

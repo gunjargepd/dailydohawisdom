@@ -2632,4 +2632,49 @@ body.light-mode .chat-quick-chips {
   }
 }
 
+/* Standalone Page & Article Styles */
+.page-container article h2 {
+  color: var(--brand-saffron);
+  font-family: var(--font-header);
+  font-size: 1.35rem;
+  margin-top: 25px;
+  margin-bottom: 12px;
+}
+
+.page-container article blockquote {
+  background: rgba(255, 153, 51, 0.08);
+  border-left: 4px solid var(--brand-saffron);
+  padding: 12px 18px;
+  margin: 15px 0;
+  border-radius: 0 10px 10px 0;
+  font-style: italic;
+  color: var(--brand-gold);
+}
+
+.article-full-content blockquote {
+  background: rgba(255, 153, 51, 0.08);
+  border-left: 4px solid var(--brand-saffron);
+  padding: 12px 18px;
+  margin: 15px 0;
+  border-radius: 0 10px 10px 0;
+  font-style: italic;
+  color: var(--brand-gold);
+}
+
+.article-full-content h2 {
+  color: var(--brand-saffron);
+  font-family: var(--font-header);
+  font-size: 1.35rem;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.article-full-content h3 {
+  color: var(--brand-gold);
+  font-size: 1.1rem;
+  margin-top: 18px;
+  margin-bottom: 8px;
+}
+
+
 
